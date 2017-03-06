@@ -19,7 +19,7 @@ class GameController extends Controller
     public function index()
     {
         //
-        $games = Game::orderBy('created_at','desc')->paginate(50);
+        $games = Game::orderBy('created_at','desc')->paginate(10);
         return view('games.games',['games'=>$games]);
     }
 
@@ -50,6 +50,29 @@ class GameController extends Controller
         return redirect()->route('gamesetup',['gameid'=>$game->id]);
 
     }
+
+    public function newround(Request $request,$id)
+    {
+        //
+        $oldgame = Game::find($id);
+        $game = new Game;
+        $game->letter=Str::upper(chr(rand(65,90)));
+        $request->user()->games()->save($game);
+
+        foreach($oldgame->categories as $oldcategory)
+        {
+          $oldcat = Category::find($oldcategory->id);
+          $gamecat = Game::find($game->id);
+          $gamecat->categories()->attach($oldcat);
+        }
+
+
+        $game->update();
+
+        return redirect()->route('playgame',['game_id'=>$game->id]);
+
+    }
+
 
     /**
      * Display the specified resource.
@@ -135,5 +158,19 @@ class GameController extends Controller
 
       return view('games.play',['game'=>$game]);
     }
+
+    public function leavegame($game_id)
+    {
+      $game = Game::find($game_id);
+      $game->players()->detach(Auth::user());
+
+      return redirect()->route('games');
+    }
+
+    public function janja()
+    {
+        $janjagame = New Game;
+    }
+
 
 }

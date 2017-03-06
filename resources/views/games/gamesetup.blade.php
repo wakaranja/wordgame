@@ -6,7 +6,7 @@
 
       <div class="col-md-6">
         <div class="panel panel-default">
-          <div class="panel-heading">Game code #{{ $game->id }} categories</div>
+          <div class="panel-heading">Game code #{{ $game->id }} categories @if( count($game->categories)>0)<a href="{{ route('playgame',['game_id'=>$game->id]) }}"><b class="pull-right"> <i class="fa fa-play" aria-hidden="true"></i>  Play this game @endif</b></a></div>
             <div class="panel-body">
 
               @foreach($game->categories as $category)

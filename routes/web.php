@@ -84,6 +84,11 @@ Route::get('/newgame',[
   'as'=>'newgame'
 ]);
 
+Route::get('/newround/{id}',[
+  'uses'=>'GameController@newround',
+  'as'=>'newround'
+]);
+
 Route::get('/gamesetup/{id}',[
   'uses'=>'GameController@show',
   'as'=>'gamesetup'
@@ -122,4 +127,14 @@ Route::get('/waiting/{id}',[
 Route::get('/loadresults/{game_id}',[
   'uses'=>'GamescoreController@loadresults',
   'as'=>'loadresults'
+]);
+
+Route::get('/leavegame/{game_id}',[
+  'uses'=>'GameController@leavegame',
+  'as'=>'leavegame'
+]);
+
+Route::get('/janja',[
+  'uses'=>'GameController@janja',
+  'as'=>'janja'
 ]);

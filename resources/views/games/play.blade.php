@@ -19,14 +19,24 @@
                   @endforeach
                   <input type="hidden" name="game_id" value="{{$game->id}}">
 
-                    <div class="col-md-6 col-md-offset-4">
+                    <div class="col-md-12 text-centre">
                       <br>
                         <button type="submit" class="btn btn-primary">
                             Done, Submit my entries!
-                        </button>
+                        </button><br><br>
+
+
+
                     </div>
 
                     </form>
+                    <div class="col-md-12 text-centre">
+                      <a href="{{ route('leavegame',['game_id'=>$game->id]) }}"><button class="btn btn-danger"  onclick="return confirm('Are you sure you want to leave this game?');">
+                          Cancel & Leave Game.
+                      </button></a>
+                    </div>
+
+
                 </div>
 
             </div>

@@ -10,7 +10,7 @@
             <div class="panel-body">
 
               @foreach($games as $game)
-                {{$loop->index+1 }}. Game Code #{{ $game->id }} Letter: {{ $game->letter }} --- <a href="{{ route('playgame',['game_id'=>$game->id]) }}">Play Game</a><br>
+                {{$loop->index+1 }}. Game Code #{{ $game->id }} Letter: {{ $game->letter }} --- @if( count($game->categories)>0)<a href="{{ route('playgame',['game_id'=>$game->id]) }}">Play Game</a> @endif<br>
                 @if( $game->user_id == Auth::user()->id )
                 <a href="{{ route('gamesetup',['id'=>$game->id]) }}"><small>setup</small></a> |
 
@@ -21,9 +21,11 @@
                   {{$loop->index+1 }}. {{$category->name}}<br>
                 @endforeach
                 <br>
+                <hr>
               @endforeach
 
-              <div class="col-md-12">
+
+              <div class="col-md-12 text-centre">
                 {{ $games->links() }}
               </div>
             </div>
