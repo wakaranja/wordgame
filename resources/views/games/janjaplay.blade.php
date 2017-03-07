@@ -9,7 +9,7 @@
                 <div class="panel-heading">Game On! You are playing with Letter {{$game->letter}}</div>
 
                 <div class="panel-body">
-                  <form class="form-horizontal" role="form" method="POST" action="{{ route('gamescore')}}">
+                  <form class="form-horizontal" role="form" method="POST" action="{{ route('janjagamescore')}}">
                     {{ csrf_field() }}
                   @foreach($game->categories as $category)
                   <div class="col-md-2">
@@ -31,7 +31,7 @@
 
                     </form>
                     <div class="col-md-12 text-centre">
-                      <a href="{{ route('leavegame',['game_id'=>$game->id]) }}"><button class="btn btn-danger"  onclick="return confirm('Are you sure you want to leave this game?');">
+                      <a href="{{ route('janjaleavegame',['game_id'=>$game->id]) }}"><button class="btn btn-danger"  onclick="return confirm('Are you sure you want to leave this game?');">
                           Cancel & Leave Game.
                       </button></a>
                     </div>

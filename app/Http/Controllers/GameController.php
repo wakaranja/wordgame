@@ -73,6 +73,28 @@ class GameController extends Controller
 
     }
 
+    public function janjanewround(Request $request,$id)
+    {
+        //
+        $oldgame = Game::find($id);
+        $game = new Game;
+        $game->letter=Str::upper(chr(rand(65,90)));
+        $request->user()->games()->save($game);
+
+        foreach($oldgame->categories as $oldcategory)
+        {
+          $oldcat = Category::find($oldcategory->id);
+          $gamecat = Game::find($game->id);
+          $gamecat->categories()->attach($oldcat);
+        }
+
+
+        $game->update();
+
+        return redirect()->route('janjaplaygame',['game_id'=>$game->id]);
+
+    }
+
 
     /**
      * Display the specified resource.
@@ -88,6 +110,16 @@ class GameController extends Controller
         $categories = Category::orderBy('name','asc')->paginate(50);
 
         return view('games.gamesetup',['game'=>$game,'categories'=>$categories]);
+    }
+
+    public function janjashow($id)
+    {
+        //
+        $game = Game::find($id);
+
+        $categories = Category::orderBy('name','asc')->paginate(50);
+
+        return view('games.janjasetup',['game'=>$game,'categories'=>$categories]);
     }
 
     /**
@@ -133,7 +165,8 @@ class GameController extends Controller
 
       $game->categories()->attach($category);
 
-      return redirect()->route('gamesetup',['gameid'=>$game_id]);
+      // return redirect()->route('gamesetup',['gameid'=>$game_id]);
+      return back();
     }
 
     public function deletegamecategory($game_id,$category_id)
@@ -142,7 +175,8 @@ class GameController extends Controller
       $category=Category::find($category_id);
       $game->categories()->detach($category);
 
-      return redirect()->route('gamesetup',['gameid'=>$game_id]);
+      // return redirect()->route('gamesetup',['gameid'=>$game_id]);
+      return back();
     }
 
     public function playgame($game_id)
@@ -159,6 +193,23 @@ class GameController extends Controller
       return view('games.play',['game'=>$game]);
     }
 
+    public function janjaplaygame($game_id)
+    {
+      $game = Game::find($game_id);
+      $playedthisgamepreviously = Game::where('id',$game_id)->count();
+      if($playedthisgamepreviously > 0){
+        $game->players()->detach(Auth::user());
+      }
+
+      $game = Game::find($game_id);
+      $janja = User::find(3);
+      $game->players()->attach(Auth::user());
+      $game->players()->attach($janja);
+
+
+      return view('games.janjaplay',['game'=>$game]);
+    }
+
     public function leavegame($game_id)
     {
       $game = Game::find($game_id);
@@ -167,9 +218,26 @@ class GameController extends Controller
       return redirect()->route('games');
     }
 
-    public function janja()
+    public function janjaleavegame($game_id)
     {
-        $janjagame = New Game;
+      $game = Game::find($game_id);
+      $janja = User::find(3);
+      $game->players()->detach(Auth::user());
+      $game->players()->detach($janja);
+      $game->delete();
+
+      return view('home');
+    }
+
+
+    public function janja(Request $request)
+    {
+      $game = new Game;
+      $game->letter=Str::upper(chr(rand(65,90)));
+
+      $request->user()->games()->save($game);
+
+      return redirect()->route('janjagamesetup',['gameid'=>$game->id]);
     }
 
 

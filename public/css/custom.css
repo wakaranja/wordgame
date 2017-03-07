@@ -9,3 +9,12 @@
 .text-centre{
   text-align: center;
 }
+
+.footer
+{
+  text-align: center;
+  color: #fff;
+  background-color:#000;
+  min-height: 150px;
+  position: fixed;
+}

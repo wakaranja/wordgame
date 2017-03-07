@@ -10,8 +10,8 @@
             <div class="panel-body">
 
               @foreach($game->categories as $category)
-                {{$loop->index+1 }}. {{$category->name}} {{$category->id}}
-                <a href="{{ route('deletegamecategory',['game_id'=>$game->id,'category_id'=>$category->id]) }}" onclick="return confirm('Are you sure you want to delete this category?');"><small>delete</small></a>
+                {{$loop->index+1 }}. {{$category->name}} 
+                <a href="{{ route('deletegamecategory',['game_id'=>$game->id,'category_id'=>$category->id]) }}" onclick="return confirm('Are you sure you want to remove this category?');"> <small><span class="label label-danger"> Remove</span></small></a>
                 <br>
               @endforeach
 
@@ -27,7 +27,7 @@
 
                 @foreach($categories as $category)
                     {{$loop->index+1 }}. {{$category->name}}
-                   <a href="{{ route('addgamecategory',['game_id'=>$game->id,'category_id'=>$category->id]) }}"><small>Add to the game</small></a>
+                   <a href="{{ route('addgamecategory',['game_id'=>$game->id,'category_id'=>$category->id]) }}"><span class="label label-success">Add to the game</span></a>
                <br>
 
                 @endforeach

@@ -84,6 +84,10 @@
         </nav>
 
         @yield('content')
+
+        <!-- <div class="col-md-12 footer">
+          made with love by <a href="http://samkaranja.com">Sam Karanja</a>
+        </div> -->
     </div>
 
     <!-- Scripts -->

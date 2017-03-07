@@ -138,3 +138,28 @@ Route::get('/janja',[
   'uses'=>'GameController@janja',
   'as'=>'janja'
 ]);
+
+Route::get('/janjagamesetup/{id}',[
+  'uses'=>'GameController@janjashow',
+  'as'=>'janjagamesetup'
+]);
+
+Route::get('/janjaplaygame/{game_id}',[
+  'uses'=>'GameController@janjaplaygame',
+  'as'=>'janjaplaygame'
+]);
+
+Route::get('/janjaleavegame/{game_id}',[
+  'uses'=>'GameController@janjaleavegame',
+  'as'=>'janjaleavegame'
+]);
+
+Route::post('/janjagamescore',[
+  'uses'=>'GamescoreController@janjastore',
+  'as'=>'janjagamescore'
+]);
+
+Route::get('/janjanewround/{id}',[
+  'uses'=>'GameController@janjanewround',
+  'as'=>'janjanewround'
+]);

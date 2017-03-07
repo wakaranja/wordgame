@@ -14,7 +14,7 @@
                     </div>
 
                     <div class="col-md-12">
-                      <a href="{{ route('newgame') }}"><h3><i class="fa fa-android" aria-hidden="true"></i>   Play vs Janja (Our Words Bot)</h3></a>
+                      <a href="{{ route('janja') }}"><h3><i class="fa fa-android" aria-hidden="true"></i>   Play vs Janja (Our Words Bot)</h3></a>
                       <hr>
                     </div>
 

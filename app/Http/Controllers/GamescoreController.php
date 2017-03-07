@@ -74,6 +74,122 @@ class GamescoreController extends Controller
 
     }
 
+    public function janjastore(Request $request)
+    {
+        //
+        $user_id=Auth::user()->id;
+
+        $game_id=$request['game_id'];
+
+        $oldentrycount = Gamescore::where('game_id',$game_id)->where('user_id',$user_id)->count();
+        $oldjanjaentrycount = Gamescore::where('game_id',$game_id)->where('user_id',3)->count();
+
+        if($oldentrycount>0){
+          $oldentry=Gamescore::where('game_id',$game_id)->where('user_id',$user_id)->delete();
+        }
+        if($oldjanjaentrycount>0){
+          $oldentry=Gamescore::where('game_id',$game_id)->where('user_id',3)->delete();
+        }
+
+        $game = Game::find($request['game_id']);
+
+        //Create Janja Entry
+        foreach ($game->categories as $category) {
+          $gamescore=new Gamescore;
+
+          $category_name = str_replace(' ','_', $category->name);
+
+          $gamescore->user_id = 3;
+          $gamescore->game_id = $request['game_id'];
+          $gamescore->category_id = $category->id;
+          //Get a random entry for Janja
+          $letterentry = Entry::where('category_id',$category->id)->inRandomOrder()->get();
+          
+          foreach($letterentry as $entryname)
+          {
+            $startswithletter = starts_with($entryname->name,$game->letter);
+            if($startswithletter)
+            {
+              $gamescore->entry = $entryname->name;
+
+            }
+          }
+
+
+          $gamescore->score = 0;
+
+          $gamescore->save();
+        }
+
+        foreach ($game->categories as $category) {
+          $gamescore=new Gamescore;
+
+          $category_name = str_replace(' ','_', $category->name);
+
+          $gamescore->user_id = Auth::user()->id;
+          $gamescore->game_id = $request['game_id'];
+          $gamescore->category_id = $category->id;
+          $gamescore->entry = $request[$category_name];
+          $gamescore->score = 0;
+
+          $gamescore->save();
+        }
+
+
+
+        foreach ($game->categories as $category) {
+            $category_name = str_replace(' ','_', $category->name);
+            $gamescore=Gamescore::where('game_id',$game_id)->where('user_id',$user_id)->where('category_id',$category->id)->first();
+            $entry=$gamescore->entry;
+            $letter=$game->letter;
+            $start=starts_with($entry,$letter);
+            $present=Entry::where('name',$entry)->first();
+            $unique = Gamescore::where('entry',$entry)->where('game_id',$game_id)->get();
+            if(($present===null) || !($start))
+            {
+              $score=0;
+            }
+            elseif($unique->count()>1){
+              $score=5;
+            }
+            else{
+              $score=10;
+            }
+            $gamescore->score=$score;
+            $gamescore->update();
+            }
+
+      //Janja Analysis
+          foreach ($game->categories as $category) {
+              $category_name = str_replace(' ','_', $category->name);
+              $gamescore=Gamescore::where('game_id',$game_id)->where('user_id',3)->where('category_id',$category->id)->first();
+              $entry=$gamescore->entry;
+              $letter=$game->letter;
+              $start=starts_with($entry,$letter);
+              $present=Entry::where('name',$entry)->first();
+              $unique = Gamescore::where('entry',$entry)->where('game_id',$game_id)->get();
+              if(($present===null) || !($start))
+              {
+                $score=0;
+              }
+              elseif($unique->count()>1){
+                $score=5;
+              }
+              else{
+                $score=10;
+              }
+              $gamescore->score=$score;
+              $gamescore->update();
+            }
+
+              $results=Game::find($game_id);
+              $resultsinfo=Gamescore::where('game_id',$game_id)->get();
+
+            return view('games.janjaresults',['results'=>$results,'resultsinfo'=>$resultsinfo]);
+
+    }
+
+
     public function waiting($id)
     {
       $mygame = Game::find($id);
