@@ -73,6 +73,18 @@ class GameController extends Controller
 
     }
 
+    public function playagain(Request $request,$id)
+    {
+        //
+        $oldgame = Game::find($id);
+
+        $game = Game::where('user_id',$oldgame->user_id)->orderBy('created_at','desc')->first();
+        $game->players()->attach(Auth::user());
+
+        return redirect()->route('playgame',['game_id'=>$game->id]);
+
+    }
+
     public function janjanewround(Request $request,$id)
     {
         //

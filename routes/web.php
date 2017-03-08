@@ -114,6 +114,11 @@ Route::get('/playgame/{game_id}',[
   'as'=>'playgame'
 ]);
 
+Route::get('/playagain/{game_id}',[
+  'uses'=>'GameController@playagain',
+  'as'=>'playagain'
+]);
+
 Route::post('/gamescore',[
   'uses'=>'GamescoreController@store',
   'as'=>'gamescore'

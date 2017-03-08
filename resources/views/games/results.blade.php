@@ -45,7 +45,7 @@
       </div>
       @else
       <div class="text-centre">
-        <a href="#"><button type="button" class="btn btn-primary"name="button">Play Again</button></a>
+        <a href="{{ route('playagain',['game_id'=>$results->id]) }}"><button type="button" class="btn btn-primary"name="button">Play Again</button></a>
       </div>
       @endif
       <br>
